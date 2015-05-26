@@ -1,43 +1,21 @@
 ﻿# package-version-sync
 
-Automate the updating of your version number of your package with tools. CLI or straight node.
+Automate the updating of your version number of your package with tools.
+
+Note that for those interested in a cli version I have one built. Let me know
+if you want it published
 
 ## Installation
 
 `npm install package-version-sync --save-dev`
 
-OR
-
-`npm install package-version-sync -g`
-
-## CLI
-
-`-f` relative file path
-`-M` major version number
-`-m` minor version number
-`-p` patch version number
-
-```
-// get the package version
-./package_version_sync/bin/package-version-sync -f ./package_version_sync/tests/package.json
-
-// => (I didn't create the switch that stops the rewrite of the original version number)
-// New version number: 1.5.123
-// Written to: ...file/path
-
-// update the version number, bump major by 1, minor by 2 and patch by 3
-package-version-sync -f ... -Mmmppp
-
-// => Anytime a higher version number is set it automatically zeroes out lower numbers.
-// New version number: 2.2.3
-```
-
-## Node
+## Usage
 
 Note that I'm using newer style node ES6 with TypeScript
 
 ```js
-import {version, Version, bumpVersionNumber, updateStringVersionNumber, bumpFileVersion} from 'version'
+import {version, Version, bumpVersionNumber, updateStringVersionNumber,
+bumpFileVersion} from 'version'
 
 const PACKAGE_PATH = './package.json'
 
