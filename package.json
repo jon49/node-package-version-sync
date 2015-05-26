@@ -20,7 +20,8 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^2.8.1",
-    "lodash": "^3.9.1"
+    "lodash": "^3.9.1",
+    "strip-bom": "^1.0.0"
   },
   "devDependencies": {
     "jasmine-node": "^1.14.5"
