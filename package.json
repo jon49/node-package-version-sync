@@ -4,11 +4,11 @@
   "description": "get a json file (like package.json) get or increment version number of file and save",
   "main": "version.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine-node ./tests"
   },
   "repository": {
     "type": "git",
-    "url": " https://github.com/jon49/node-package-version-sync"
+    "url": "https://github.com/jon49/node-package-version-sync"
   },
   "keywords": [
     "package",
@@ -19,6 +19,7 @@
   "author": "Jon Nyman",
   "license": "ISC",
   "dependencies": {
+    "commander": "^2.8.1",
     "lodash": "^3.9.1"
   }
 }

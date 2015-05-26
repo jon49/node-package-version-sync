@@ -1,8 +1,10 @@
 /// <reference path="typings/typings.d.ts" />
 var fs = require('fs');
+var path = require('path');
 var _ = require('lodash');
-var JSON_FILE_PATH = '../package.json';
-var package = JSON.parse(require(JSON_FILE_PATH));
+var stripBom = require('strip-bom');
+var filePath = function (fileName) { return path.join(path.dirname(module.parent.filename), fileName); };
+exports.getObjFromFile = function (fileName) { return JSON.parse(stripBom(fs.readFileSync(filePath(fileName), 'utf8'))); };
 (function (Version) {
     Version[Version["Major"] = 0] = "Major";
     Version[Version["Minor"] = 1] = "Minor";
@@ -11,7 +13,7 @@ var package = JSON.parse(require(JSON_FILE_PATH));
 var Version = exports.Version;
 exports.updateStringVersionNumber = function (versionToIncrement, version) {
     var delimiter = '.';
-    var v = package.version.split(delimiter);
+    var v = version.split(delimiter);
     // increment and reset version numbers
     v[versionToIncrement]++;
     if (versionToIncrement === Version.Major) {
@@ -24,24 +26,14 @@ exports.updateStringVersionNumber = function (versionToIncrement, version) {
     return v.join(delimiter);
 };
 exports.bumpVersionNumber = function (versionToIncrement, obj) {
-    return _.assign({ version: exports.updateStringVersionNumber(versionToIncrement, obj.version) }, obj);
+    return _.assign(obj, { version: exports.updateStringVersionNumber(versionToIncrement, obj.version) });
 };
-exports.bumpFileVersion = function (versionToIncrement, fileName) {
-    var p = JSON.parse(fs.readFileSync(fileName, 'utf8'));
-    var json = JSON.stringify(exports.bumpVersionNumber(versionToIncrement, p));
-    fs.writeFileSync(fileName, json, { encoding: 'utf8' });
+exports.version = function (fileName) { return exports.getObjFromFile(fileName).version; };
+exports.bumpFileVersion = function (fileName, versionToIncrement) {
+    var p = exports.getObjFromFile(fileName);
+    var v = exports.bumpVersionNumber(versionToIncrement, p);
+    var json = JSON.stringify(v, null, '\t');
+    fs.writeFileSync(filePath(fileName), json, { encoding: 'utf8' });
+    return v.version;
 };
-if (!module.parent) {
-    var cli = require('commander');
-    cli
-        .option('-f --filename <filename>', 'File to increment version number')
-        .option('-M --major', 'Increment major version in package.json', exports.bumpVersionNumber.bind(null, Version.Major))
-        .option('-m --minor', 'Increment minor version in package.json', exports.bumpVersionNumber.bind(null, Version.Minor))
-        .option('-p --patch', 'Increment patch version in json file', exports.bumpVersionNumber.bind(null, Version.Patch))
-        .parse(process.argv);
-    console.log(fs.readFileSync(cli.filename, 'utf8'));
-    var x = JSON.parse(fs.readFileSync(cli.filename, 'utf8'));
-    var y = _.reduce(_.map(_.keys(Version), function (v) { return v.toLowerCase(); }), function (acc, v) { return cli[v] ? cli[v](acc) : acc; }, x);
-    fs.writeFileSync(cli.filename, JSON.stringify(y), { encoding: 'utf8' });
-}
 //# sourceMappingURL=version.js.map
