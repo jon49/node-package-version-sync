@@ -1,6 +1,6 @@
 {
   "name": "package-version-sync",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "get a json file (like package.json) get or increment version number of file and save",
   "main": "version.js",
   "scripts": {
