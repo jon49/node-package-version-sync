@@ -2,6 +2,8 @@
 
 Automate the updating of your version number of your package with tools.
 
+[![Build Status](https://travis-ci.org/jon49/node-package-version-sync.png?branch=master)](https://travis-ci.org/jon49/node-package-version-sync)
+
 Note that for those interested in a cli version I have one built. Let me know
 if you want it published
 
